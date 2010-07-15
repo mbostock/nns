@@ -1,52 +1,52 @@
-function n$(element) {
+function n$(e) {
 
   var o = {
-    add: function(name) {
-      name = n$.qualify(name);
-      return n$(element.appendChild(name.space == null
-          ? document.createElement(name.local)
-          : document.createElementNS(name.space, name.local)));
+    add: function(n) {
+      n = n$.qualify(n);
+      return n$(e.appendChild(n.space == null
+          ? document.createElement(n.local)
+          : document.createElementNS(n.space, n.local)));
     },
-    attr: function(name, value) {
-      name = n$.qualify(name);
+    attr: function(n, v) {
+      n = n$.qualify(n);
       if (arguments.length == 1) {
-        return name.space == null
-            ? element.getAttribute(name.local)
-            : element.getAttributeNS(name.space, name.local);
+        return n.space == null
+            ? e.getAttribute(n.local)
+            : e.getAttributeNS(n.space, n.local);
       }
-      if (name.space == null) {
-        if (value == null) element.removeAttribute(name.local);
-        else element.setAttribute(name.local, value);
+      if (n.space == null) {
+        if (v == null) e.removeAttribute(n.local);
+        else e.setAttribute(n.local, v);
       } else {
-        if (value == null) element.removeAttributeNS(name.space, name.local);
-        else element.setAttributeNS(name.space, name.local, value);
+        if (v == null) e.removeAttributeNS(n.space, n.local);
+        else e.setAttributeNS(n.space, n.local, v);
       }
       return o;
     },
-    style: function(name, value, priority) {
-      if (arguments.length == 1) return element.style.getPropertyValue(name);
-      if (value == null) element.style.removeProperty(name);
-      else element.style.setProperty(name, value, arguments.length == 3 ? priority : null);
+    style: function(n, v, p) {
+      if (arguments.length == 1) return e.style.getPropertyValue(n);
+      if (v == null) e.style.removeProperty(n);
+      else e.style.setProperty(n, v, arguments.length == 3 ? p : null);
       return o;
     },
-    text: function(value) {
-      var text = element.firstChild;
-      if (!arguments.length) return text && text.nodeValue;
-      if (text) text.nodeValue = value;
-      else if (value != null) text = element.appendChild(document.createTextNode(value));
+    text: function(v) {
+      var t = e.firstChild;
+      if (!arguments.length) return t && t.nodeValue;
+      if (t) t.nodeValue = v;
+      else if (v != null) t = e.appendChild(document.createTextNode(v));
       return o;
     },
-    element: element
+    element: e
   };
 
   return o;
 }
 
-n$.qualify = function(name) {
-  var i = name.indexOf(":");
+n$.qualify = function(n) {
+  var i = n.indexOf(":");
   return {
-    space: n$.prefix[name.substring(0, i)],
-    local: name.substring(i + 1)
+    space: n$.prefix[n.substring(0, i)],
+    local: n.substring(i + 1)
   };
 };
 
