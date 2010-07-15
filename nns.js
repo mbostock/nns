@@ -33,7 +33,7 @@ function n$(element) {
       var text = element.firstChild;
       if (!arguments.length) return text && text.nodeValue;
       if (text) text.nodeValue = value;
-      else text = element.appendChild(document.createTextNode(value));
+      else if (value != null) text = element.appendChild(document.createTextNode(value));
       return o;
     },
     element: element
