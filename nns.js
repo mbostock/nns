@@ -1,22 +1,14 @@
-function $vg(element) {
-
-  function qualify(name) {
-    var i = name.indexOf(":");
-    return {
-      space: $vg.ns[name.substring(0, i)],
-      local: name.substring(i + 1)
-    };
-  }
+function n$(element) {
 
   var o = {
     add: function(name) {
-      name = qualify(name);
-      return $vg(element.appendChild(name.space == null
+      name = n$.qualify(name);
+      return n$(element.appendChild(name.space == null
           ? document.createElement(name.local)
           : document.createElementNS(name.space, name.local)));
     },
     attr: function(name, value) {
-      name = qualify(name);
+      name = n$.qualify(name);
       if (arguments.length == 1) {
         return name.space == null
             ? element.getAttribute(name.local)
@@ -50,7 +42,15 @@ function $vg(element) {
   return o;
 }
 
-$vg.ns = {
+n$.qualify = function(name) {
+  var i = name.indexOf(":");
+  return {
+    space: n$.prefix[name.substring(0, i)],
+    local: name.substring(i + 1)
+  };
+};
+
+n$.prefix = {
   svg: "http://www.w3.org/2000/svg",
   xlink: "http://www.w3.org/1999/xlink",
   xml: "http://www.w3.org/XML/1998/namespace",
