@@ -1,33 +1,58 @@
-var nsvg = (function() {
+function $vg(element) {
 
-  var ns = {
-    svg: "http://www.w3.org/2000/svg",
-    xlink: "http://www.w3.org/1999/xlink",
-    xml: "http://www.w3.org/XML/1998/namespace",
-    xmlns: "http://www.w3.org/2000/xmlns/"
+  function qualify(name) {
+    var i = name.indexOf(":");
+    return {
+      space: $vg.ns[name.substring(0, i)],
+      local: name.substring(i + 1)
+    };
+  }
+
+  var o = {
+    add: function(name) {
+      name = qualify(name);
+      return $vg(element.appendChild(name.space == null
+          ? document.createElement(name.local)
+          : document.createElementNS(name.space, name.local)));
+    },
+    attr: function(name, value) {
+      name = qualify(name);
+      if (arguments.length == 1) {
+        return name.space == null
+            ? element.getAttribute(name.local)
+            : element.getAttributeNS(name.space, name.local);
+      }
+      if (name.space == null) {
+        if (value == null) element.removeAttribute(name.local);
+        else element.setAttribute(name.local, value);
+      } else {
+        if (value == null) element.removeAttributeNS(name.space, name.local);
+        else element.setAttributeNS(name.space, name.local, value);
+      }
+      return o;
+    },
+    style: function(name, value) {
+      if (arguments.length == 1) return element.style.getPropertyValue(name);
+      if (value == null) element.style.removeProperty(name);
+      else element.style.setProperty(name, value);
+      return o;
+    },
+    text: function(value) {
+      var text = element.firstChild;
+      if (!arguments.length) return text && text.nodeValue;
+      if (text) text.nodeValue = value;
+      else text = element.appendChild(document.createTextNode(value));
+      return o;
+    },
+    element: element
   };
 
-  function create(type, attributes) {
-    return set(document.createElementNS(ns.svg, type), attributes);
-  }
+  return o;
+}
 
-  function set(element, attributes) {
-    if (attributes) for (name in attributes) {
-      var i = name.indexOf(":"),
-          namespace = null,
-          value = attributes[name];
-      if (i > 0) {
-        var prefix = name.substring(0, i);
-        if (prefix in ns) {
-          namespace = ns[prefix];
-          name = name.substring(i + 1);
-        }
-      }
-      if (value == null) element.removeAttributeNS(namespace, name);
-      else element.setAttributeNS(namespace, name, value);
-    }
-    return element;
-  }
-
-  return {ns: ns, create: create, set: set};
-})();
+$vg.ns = {
+  svg: "http://www.w3.org/2000/svg",
+  xlink: "http://www.w3.org/1999/xlink",
+  xml: "http://www.w3.org/XML/1998/namespace",
+  xmlns: "http://www.w3.org/2000/xmlns/"
+};

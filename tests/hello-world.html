@@ -1,0 +1,34 @@
+<html>
+  <head>
+    <script type="text/javascript" src="../nsvg.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+var svg = $vg(document.body).add("svg:svg")
+    .attr("width", 640)
+    .attr("height", 480);
+
+svg.add("svg:rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "none")
+    .attr("stroke", "black");
+
+svg.add("svg:text")
+    .attr("x", "50%")
+    .attr("y", "50%")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "middle")
+    .style("font", "36pt Comic Sans MS")
+    .style("text-shadow", "0.1em 0.1em 0.1em rgba(0,0,0,.5)")
+    .text("Hello, world!");
+
+svg.add("svg:image")
+    .attr("xlink:href", "http://vis.stanford.edu/protovis/ex/stanford.png")
+    .attr("width", "200")
+    .attr("height", "200");
+
+    </script>
+  </body>
+</html>
