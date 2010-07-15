@@ -23,10 +23,10 @@ function n$(element) {
       }
       return o;
     },
-    style: function(name, value) {
+    style: function(name, value, priority) {
       if (arguments.length == 1) return element.style.getPropertyValue(name);
       if (value == null) element.style.removeProperty(name);
-      else element.style.setProperty(name, value);
+      else element.style.setProperty(name, value, arguments.length == 3 ? priority : null);
       return o;
     },
     text: function(value) {
