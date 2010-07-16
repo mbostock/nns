@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <script type="text/javascript" src="../nns.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+var svg = n$(document.body).add("svg:svg")
+    .attr("width", 200)
+    .attr("height", 200)
+    .style("font", "36pt Helvetica Neue")
+    .style("text-rendering", "optimizeLegibility");
+
+svg.add("svg:rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "none")
+    .attr("stroke", "black");
+
+var text = n$("svg:text")
+    .attr("x", "50%")
+    .attr("y", "50%")
+    .attr("dy", ".35em")
+    .attr("text-anchor", "middle")
+    .text("PASS");
+
+svg.add(text);
+
+    </script>
+  </body>
+</html>

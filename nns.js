@@ -1,14 +1,61 @@
-function n$(e) {
+var n$ = (function() {
 
-  var o = {
-    add: function(n) {
-      n = n$.qualify(n);
-      return n$(e.appendChild(n.space == null
-          ? document.createElement(n.local)
-          : document.createElementNS(n.space, n.local)));
+  function create(n) {
+    n = qualify(n);
+    return n.space == null
+        ? document.createElement(n.local)
+        : document.createElementNS(n.space, n.local);
+  }
+
+  function qualify(n) {
+    var i = n.indexOf(":");
+    return {
+      space: n$.prefix[n.substring(0, i)],
+      local: n.substring(i + 1)
+    };
+  }
+
+  function $n(o) {
+    return o && o.element || o;
+  }
+
+  function N$(e) {
+    this.element = e;
+  }
+
+  N$.prototype = {
+
+    add: function(c, s) {
+      return n$($n(this).insertBefore(
+          typeof c == "string" ? create(c) : $n(c),
+          arguments.length == 1 ? null : $n(s)));
     },
+
+    remove: function(c) {
+      $n(this).removeChild($n(c));
+      return this;
+    },
+
+    parent: function() {
+      return n$($n(this).parentNode);
+    },
+
+    child: function(i) {
+      var children = $n(this).childNodes;
+      return n$(children[i < 0 ? children.length - i - 1 : i]);
+    },
+
+    previous: function() {
+      return n$($n(this).previousSibling);
+    },
+
+    next: function() {
+      return n$($n(this).nextSibling);
+    },
+
     attr: function(n, v) {
-      n = n$.qualify(n);
+      var e = $n(this);
+      n = qualify(n);
       if (arguments.length == 1) {
         return n.space == null
             ? e.getAttribute(n.local)
@@ -21,34 +68,42 @@ function n$(e) {
         if (v == null) e.removeAttributeNS(n.space, n.local);
         else e.setAttributeNS(n.space, n.local, v);
       }
-      return o;
+      return this;
     },
+
     style: function(n, v, p) {
-      if (arguments.length == 1) return e.style.getPropertyValue(n);
-      if (v == null) e.style.removeProperty(n);
-      else e.style.setProperty(n, v, arguments.length == 3 ? p : null);
-      return o;
+      var style = $n(this).style;
+      if (arguments.length == 1) return style.getPropertyValue(n);
+      if (v == null) style.removeProperty(n);
+      else style.setProperty(n, v, arguments.length == 3 ? p : null);
+      return this;
     },
+
+    on: function(t, l, c) {
+      $n(this).addEventListener(t, l, arguments.length == 3 ? c : false);
+      return this;
+    },
+
+    off: function(t, l, c) {
+      $n(this).removeEventListener(t, l, arguments.length == 3 ? c : false);
+      return this;
+    },
+
     text: function(v) {
-      var t = e.firstChild;
+      var t = $n(this).firstChild;
       if (!arguments.length) return t && t.nodeValue;
       if (t) t.nodeValue = v;
-      else if (v != null) t = e.appendChild(document.createTextNode(v));
-      return o;
-    },
-    element: e
-  };
+      else if (v != null) t = $n(this).appendChild(document.createTextNode(v));
+      return this;
+    }
+  }
 
-  return o;
-}
+  function n$(e) {
+    return e == null || e.element ? e : new N$(typeof e == "string" ? create(e) : e);
+  }
 
-n$.qualify = function(n) {
-  var i = n.indexOf(":");
-  return {
-    space: n$.prefix[n.substring(0, i)],
-    local: n.substring(i + 1)
-  };
-};
+  return n$;
+})();
 
 n$.prefix = {
   svg: "http://www.w3.org/2000/svg",
