@@ -1,4 +1,4 @@
-var n$ = (function() {
+(function(_) {
 
   function create(n) {
     n = qualify(n);
@@ -13,10 +13,6 @@ var n$ = (function() {
       space: n$.prefix[n.substring(0, i)],
       local: n.substring(i + 1)
     };
-  }
-
-  function $n(o) {
-    return o && o.element || o;
   }
 
   function N$(e) {
@@ -102,12 +98,17 @@ var n$ = (function() {
     return e == null || e.element ? e : new N$(typeof e == "string" ? create(e) : e);
   }
 
-  return n$;
-})();
+  function $n(o) {
+    return o && o.element || o;
+  }
 
-n$.prefix = {
-  svg: "http://www.w3.org/2000/svg",
-  xlink: "http://www.w3.org/1999/xlink",
-  xml: "http://www.w3.org/XML/1998/namespace",
-  xmlns: "http://www.w3.org/2000/xmlns/"
-};
+  n$.prefix = {
+    svg: "http://www.w3.org/2000/svg",
+    xlink: "http://www.w3.org/1999/xlink",
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/2000/xmlns/"
+  };
+
+  _.n$ = n$;
+  _.$n = $n;
+})(this);
