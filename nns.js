@@ -22,35 +22,35 @@
   N$.prototype = {
 
     add: function(c, s) {
-      return n$($n(this).insertBefore(
+      return n$(this.element.insertBefore(
           typeof c == "string" ? create(c) : $n(c),
           arguments.length == 1 ? null : $n(s)));
     },
 
     remove: function(c) {
-      $n(this).removeChild($n(c));
+      this.element.removeChild($n(c));
       return this;
     },
 
     parent: function() {
-      return n$($n(this).parentNode);
+      return n$(this.element.parentNode);
     },
 
     child: function(i) {
-      var children = $n(this).childNodes;
+      var children = this.element.childNodes;
       return n$(children[i < 0 ? children.length - i - 1 : i]);
     },
 
     previous: function() {
-      return n$($n(this).previousSibling);
+      return n$(this.element.previousSibling);
     },
 
     next: function() {
-      return n$($n(this).nextSibling);
+      return n$(this.element.nextSibling);
     },
 
     attr: function(n, v) {
-      var e = $n(this);
+      var e = this.element;
       n = qualify(n);
       if (arguments.length == 1) {
         return n.space == null
@@ -68,7 +68,7 @@
     },
 
     style: function(n, v, p) {
-      var style = $n(this).style;
+      var style = this.element.style;
       if (arguments.length == 1) return style.getPropertyValue(n);
       if (v == null) style.removeProperty(n);
       else style.setProperty(n, v, arguments.length == 3 ? p : null);
@@ -76,20 +76,20 @@
     },
 
     on: function(t, l, c) {
-      $n(this).addEventListener(t, l, arguments.length == 3 ? c : false);
+      this.element.addEventListener(t, l, arguments.length == 3 ? c : false);
       return this;
     },
 
     off: function(t, l, c) {
-      $n(this).removeEventListener(t, l, arguments.length == 3 ? c : false);
+      this.element.removeEventListener(t, l, arguments.length == 3 ? c : false);
       return this;
     },
 
     text: function(v) {
-      var t = $n(this).firstChild;
+      var t = this.element.firstChild;
       if (!arguments.length) return t && t.nodeValue;
       if (t) t.nodeValue = v;
-      else if (v != null) t = $n(this).appendChild(document.createTextNode(v));
+      else if (v != null) t = this.element.appendChild(document.createTextNode(v));
       return this;
     }
   }
